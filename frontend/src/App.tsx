@@ -1,13 +1,16 @@
 import React from 'react';
 import logo from './logo.svg';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
+import Leagues from './components/Leagues';
+import CreateLeague from './components/CreateLeague';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
+        {/* <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
         <a
@@ -17,7 +20,19 @@ function App() {
           rel="noopener noreferrer"
         >
           Learn React
-        </a>
+        </a> */}
+        <h1>Welcome to the Poker App</h1>
+        <Router>
+          <div>
+            <nav>
+              <Link to="/">League Lists</Link> | <Link to="/create">Create League</Link>
+            </nav>
+            <Routes>
+              <Route path="/" element={<Leagues />} />
+              <Route path="/create" element={<CreateLeague />} />
+            </Routes>
+          </div>
+        </Router>
       </header>
     </div>
   );
