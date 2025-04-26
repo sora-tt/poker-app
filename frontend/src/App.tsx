@@ -1,9 +1,9 @@
-import React from 'react';
-import logo from './logo.svg';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import './App.css';
-import Leagues from './components/Leagues';
-import CreateLeague from './components/CreateLeague';
+import React from "react";
+import logo from "./logo.svg";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import "./App.css";
+import Leagues from "./components/Leagues";
+import CreateLeague from "./components/CreateLeague";
 
 function App() {
   return (
@@ -25,7 +25,8 @@ function App() {
         <Router>
           <div>
             <nav>
-              <Link to="/">League Lists</Link> | <Link to="/create">Create League</Link>
+              <Link to="/">League Lists</Link> |{" "}
+              <Link to="/create">Create League</Link>
             </nav>
             <Routes>
               <Route path="/" element={<Leagues />} />
