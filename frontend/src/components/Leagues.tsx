@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {Link} from "react-router-dom"
 
 interface League {
   id: number;
@@ -23,9 +24,12 @@ const Leagues: React.FC = () => {
 
   return (
     <div>
+      <h1>League Lists</h1>
       <ul>
         {leagues.map((league) => (
-          <li key={league.id}>{league.name}</li>
+          <li key={league.id}>
+            <Link to={`/league/${league.id}`}>{league.name}</Link>
+          </li>
         ))}
       </ul>
     </div>

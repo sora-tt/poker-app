@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import Leagues from "./components/Leagues";
 import CreateLeague from "./components/CreateLeague";
+import LeagueDetail from "./components/LeagueDetail";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Leagues />} />
               <Route path="/create" element={<CreateLeague />} />
+              <Route path="/league/:id" element={<LeagueDetail />} />
             </Routes>
           </div>
         </Router>
