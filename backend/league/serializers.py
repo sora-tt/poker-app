@@ -10,6 +10,8 @@ class LeagueSerializer(serializers.ModelSerializer):
 
 
 class PlayerSerializer(serializers.ModelSerializer):
+    leagues = LeagueSerializer(many=True, read_only=True)
+
     class Meta:
         model = Player
         fields = "__all__"
