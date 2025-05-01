@@ -13,7 +13,7 @@ class League(models.Model):
 class Player(models.Model):
     name = models.CharField(max_length=100)
     leagues = models.ManyToManyField(
-        League, related_name="players"
+        League, related_name="players", blank=True
     )  # プレイヤーが参加するリーグ
     created_at = models.DateTimeField(auto_now_add=True)
 

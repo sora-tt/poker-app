@@ -2,9 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
+interface Player {
+    id: number;
+    name: string;
+}
+
 interface League {
     id: number;
     name: string;
+    players: Player[];
 }
 
 const LeagueDetail = () => {
@@ -46,11 +52,20 @@ const LeagueDetail = () => {
     return (
         <div>
             <h2>{league.name}</h2>
-            <p>League ID: {league.id}</p>
+            <h3>Players in this league</h3>
+            <ul>
+                {league.players && league.players.length > 0 ? (
+                    league.players.map(player => (
+                        <li key={player.id}>{player.name}</li>
+                    ))
+                ) : (
+                    <li>No players in this league.</li>
+                )}
+            </ul>
             <Link to={`/league/${id}/edit`}>
                 <button>Edit League</button>
             </Link>
-            <br/>
+            <br />
             <button onClick={handleDelete} style={{ color: "red" }}>
                 Delete League
             </button>

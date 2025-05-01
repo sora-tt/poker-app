@@ -1,21 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const CreatePlayer = () => {
+interface League {
+    id: number;
+    name: string;
+}
+
+const CreatePlayer: React.FC = () => {
     const navigate = useNavigate();
     const [name, setName] = useState("");
-    const [league, setLeague] = useState("");
+    const [leagues, setLeagues] = useState<League[]>([]);
+    const [selectedLeagueIds, setSelectedLeagueIds] = useState<number[]>([]);
+
+    useEffect(() => {
+        axios
+            .get<League[]>("http://localhost:8000/api/leagues/")
+            .then((response) => {
+                setLeagues(response.data);
+            })
+            .catch((error) => {
+                console.error("Failed to fetch leagues", error);
+            });
+    }, []);
+
+    const handleLeagueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedOptions = Array.from(e.target.selectedOptions);
+        const ids = selectedOptions.map((option) => parseInt(option.value));
+        setSelectedLeagueIds(ids);
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         axios
             .post("http://localhost:8000/api/players/", {
                 name: name,
-                league: league || null, // リーグに所属しない場合も許可する
+                leagues: selectedLeagueIds, // リーグに所属しない場合も許可する
             })
             .then((response) => {
-                navigate("/players"); // 作成後、プレイヤー一覧ページへリダイレクトする予定
+                navigate("/players"); // 作成後、プレイヤー一覧ページへリダイレクトする
             })
             .catch((error) => {
                 console.error("There was an error creating the player!", error);
@@ -36,12 +60,18 @@ const CreatePlayer = () => {
                     />
                 </div>
                 <div>
-                    <label>League ID (optional):</label>
-                    <input
-                        type="text"
-                        value={league}
-                        onChange={(e) => setLeague(e.target.value)}
-                    />
+                    <label>Select Leagues:</label>
+                    <select
+                        multiple
+                        value={selectedLeagueIds.map(String)}
+                        onChange={handleLeagueChange}
+                    >
+                        {leagues.map((league) => (
+                            <option key={league.id} value={league.id}>
+                                {league.name}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <button type="submit">Create Player</button>
             </form>

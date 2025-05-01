@@ -6,6 +6,8 @@ import Leagues from "./components/Leagues";
 import CreateLeague from "./components/CreateLeague";
 import LeagueDetail from "./components/LeagueDetail";
 import EditLeague from "./components/EditLeague";
+import CreatePlayer from "./components/CreatePlayer";
+import CreateMatch from "./components/CreateMatch";
 
 function App() {
     return (
@@ -40,6 +42,14 @@ function App() {
                             <Route
                                 path="/league/:id/edit"
                                 element={<EditLeague />}
+                            />
+                            <Route
+                                path="/players/new"
+                                element={<CreatePlayer />}
+                            />
+                            <Route
+                                path="/matches/create"
+                                element={<CreateMatch />}
                             />
                         </Routes>
                     </div>
