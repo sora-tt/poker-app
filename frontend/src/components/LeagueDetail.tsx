@@ -45,6 +45,25 @@ const LeagueDetail = () => {
         }
     };
 
+    const handleEditPlayer = (playerId: number) => {
+        navigate(`/players/${playerId}/edit`);
+    };
+
+    const handleDeletePlayer = (playerId: number) => {
+        if (window.confirm("Do you really want to delete this player?")) {
+            axios
+                .delete(`http://localhost:8000/api/players/${playerId}/`)
+                .then(() => {
+                    axios
+                        .get<League>(`http://localhost:8000/api/leagues/${id}/`)
+                        .then((response) => setLeague(response.data));
+                })
+                .catch((error) => {
+                    console.error("Error deleting player:", error);
+                });
+        }
+    };
+
     if (!league) {
         return <div>Loading...</div>;
     }
@@ -56,7 +75,15 @@ const LeagueDetail = () => {
             <ul>
                 {league.players && league.players.length > 0 ? (
                     league.players.map((player) => (
-                        <li key={player.id}>{player.name}</li>
+                        <li key={player.id}>
+                            {player.name}{' '}
+                            <button onClick={() => handleEditPlayer(player.id)}>
+                                Edit
+                            </button>{' '}
+                            <button onClick={() => handleDeletePlayer(player.id)} style={{color: 'red'}}>
+                                Delete
+                            </button>
+                        </li>
                     ))
                 ) : (
                     <li>No players in this league.</li>
