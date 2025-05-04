@@ -62,9 +62,10 @@ const LeagueDetail = () => {
                     <li>No players in this league.</li>
                 )}
             </ul>
-            <Link to={`/league/id/matchs/create`}>
+            <Link to={`/league/${id}/matches/create`}>
                 <button>Create Match</button>
             </Link>
+            <br />
             <Link to={`/league/${id}/edit`}>
                 <button>Edit League</button>
             </Link>

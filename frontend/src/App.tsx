@@ -30,7 +30,8 @@ function App() {
                     <div>
                         <nav>
                             <Link to="/">League Lists</Link> |{" "}
-                            <Link to="/create">Create League</Link>
+                            <Link to="/create">Create League</Link> |{" "}
+                            <Link to="/players/new">Create Player</Link>
                         </nav>
                         <Routes>
                             <Route path="/" element={<Leagues />} />

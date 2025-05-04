@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface Player {
     id: number;
@@ -21,10 +21,11 @@ const CreateMatch: React.FC = () => {
     const [leagues, setLeagues] = useState<League[]>([]);
     const [allPlayers, setAllPlayers] = useState<Player[]>([]);
     const [players, setPlayers] = useState<Player[]>([]);
-    const [selectedLeague, setSelectedLeague] = useState<string>('');
+    const [selectedLeague, setSelectedLeague] = useState<string>("");
     const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
     const [date, setDate] = useState("");
     const navigate = useNavigate();
+    const { id: leagueIdFromParams } = useParams<{ id: string }>();
 
     useEffect(() => {
         axios
@@ -36,16 +37,23 @@ const CreateMatch: React.FC = () => {
             .get<Player[]>("http://localhost:8000/api/players/")
             .then((response) => {
                 setAllPlayers(response.data);
-                setPlayers([]);
+                if (leagueIdFromParams) {
+                    setSelectedLeague(leagueIdFromParams);
+                    const leagueId = parseInt(leagueIdFromParams);
+                    const filtered = response.data.filter((player) =>
+                        player.leagues.some((league) => league.id === leagueId)
+                    );
+                    setPlayers(filtered);
+                }
             })
             .catch((error) => console.error("Error fetching players:", error));
-    }, []);
+    }, [leagueIdFromParams]);
 
     const handleLeagueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
         setSelectedLeague(value);
 
-        const leagueId = parseInt(value)
+        const leagueId = parseInt(value);
         // 選択されたリーグに所属するプレイヤーだけを抽出
         if (!isNaN(leagueId)) {
             const filtered = allPlayers.filter((player) =>
@@ -53,16 +61,16 @@ const CreateMatch: React.FC = () => {
             );
             setPlayers(filtered);
         } else {
-            setPlayers([])
+            setPlayers([]);
         }
         setSelectedPlayers([]);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const leagueId = parseInt(selectedLeague)
+        const leagueId = parseInt(selectedLeague);
         if (isNaN(leagueId)) return;
-        
+
         axios
             .post("http://localhost:8000/api/matches/", {
                 league: selectedLeague,
@@ -90,21 +98,24 @@ const CreateMatch: React.FC = () => {
                         required
                     />
                 </div>
-                <div>
-                    <label>League:</label>
-                    <select
-                        value={selectedLeague}
-                        onChange={handleLeagueChange}
-                        required
-                    >
-                        <option value="">Select a league</option>
-                        {leagues.map((league: any) => (
-                            <option key={league.id} value={league.id}>
-                                {league.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                {/* League選択はルートにIDがあるときは非表示 */}
+                {!leagueIdFromParams && (
+                    <div>
+                        <label>League:</label>
+                        <select
+                            value={selectedLeague}
+                            onChange={handleLeagueChange}
+                            required
+                        >
+                            <option value="">Select a league</option>
+                            {leagues.map((league: any) => (
+                                <option key={league.id} value={league.id}>
+                                    {league.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
                 <div>
                     <label>Players:</label>
                     <select
