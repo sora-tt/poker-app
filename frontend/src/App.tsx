@@ -48,7 +48,7 @@ function App() {
                                 element={<CreatePlayer />}
                             />
                             <Route
-                                path="/matches/create"
+                                path="/league/:id/matches/create"
                                 element={<CreateMatch />}
                             />
                         </Routes>
