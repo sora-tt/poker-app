@@ -55,13 +55,16 @@ const LeagueDetail = () => {
             <h3>Players in this league</h3>
             <ul>
                 {league.players && league.players.length > 0 ? (
-                    league.players.map(player => (
+                    league.players.map((player) => (
                         <li key={player.id}>{player.name}</li>
                     ))
                 ) : (
                     <li>No players in this league.</li>
                 )}
             </ul>
+            <Link to={`/league/id/matchs/create`}>
+                <button>Create Match</button>
+            </Link>
             <Link to={`/league/${id}/edit`}>
                 <button>Edit League</button>
             </Link>
