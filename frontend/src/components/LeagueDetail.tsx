@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { setTextRange } from "typescript";
 
 interface Player {
     id: number;
@@ -13,12 +14,20 @@ interface League {
     players: Player[];
 }
 
+interface RankingEntry {
+    player__id: number;
+    player__name: string;
+    total_score: number;
+}
+
 const LeagueDetail = () => {
     const { id } = useParams<{ id: string }>();
     const [league, setLeague] = useState<League | null>(null);
+    const [ranking, setRanking] = useState<RankingEntry[]>([])
     const navigate = useNavigate();
 
     useEffect(() => {
+        // リーグ情報取得
         axios
             .get<League>(`http://localhost:8000/api/leagues/${id}/`)
             .then((response) => {
@@ -27,6 +36,11 @@ const LeagueDetail = () => {
             .catch((error) => {
                 console.error("There was an error fetching the league!", error);
             });
+        
+        // ランキング取得
+        axios.get<RankingEntry[]>(`http://localhost:8000/api/leagues/${id}/ranking/`)
+        .then((response) => setRanking(response.data))
+        .catch((error) => console.error("There was an error fetching the ranking!", error))
     }, [id]);
 
     const handleDelete = () => {
@@ -71,16 +85,33 @@ const LeagueDetail = () => {
     return (
         <div>
             <h2>{league.name}</h2>
+
+            <h3>Score Ranking</h3>
+            {ranking.length > 0 ? (
+                <ol>
+                    {ranking.map((entry) => (
+                        <li key={entry.player__id}>
+                            {entry.player__name}: {entry.total_score}
+                        </li>
+                    ))}
+                </ol>
+            ) : (
+                <p>No match results yet.</p>
+            )}
+
             <h3>Players in this league</h3>
             <ul>
                 {league.players && league.players.length > 0 ? (
                     league.players.map((player) => (
                         <li key={player.id}>
-                            {player.name}{' '}
+                            {player.name}{" "}
                             <button onClick={() => handleEditPlayer(player.id)}>
                                 <i className="fa-solid fa-pen"></i>
-                            </button>{' '}
-                            <button onClick={() => handleDeletePlayer(player.id)} style={{color: 'red'}}>
+                            </button>{" "}
+                            <button
+                                onClick={() => handleDeletePlayer(player.id)}
+                                style={{ color: "red" }}
+                            >
                                 <i className="fa-solid fa-trash"></i>
                             </button>
                         </li>
@@ -94,7 +125,7 @@ const LeagueDetail = () => {
             </Link>
             <br />
             <Link to={`/league/${id}/edit`}>
-                <button>Edit League</button>
+                <button>Edit League Name</button>
             </Link>
             <br />
             <button onClick={handleDelete} style={{ color: "red" }}>

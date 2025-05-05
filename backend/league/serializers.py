@@ -9,11 +9,11 @@ class LeagueSummarySerializer(serializers.ModelSerializer):
         fields = ["id", "name"]
 
 
-class PlayerSerializer(serializers.ModelSerializer):
-    leagues = LeagueSummarySerializer(many=True, read_only=True)
-    # leagues = serializers.PrimaryKeyRelatedField(
-    #     many=True, queryset=League.objects.all()
-    # )
+class PlayerWriteSerializer(serializers.ModelSerializer):
+    # leagues = LeagueSummarySerializer(many=True, read_only=True)
+    leagues = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=League.objects.all()
+    )
 
     class Meta:
         model = Player
@@ -26,8 +26,16 @@ class PlayerSerializer(serializers.ModelSerializer):
     #     return player
 
 
+class PlayerReadSerializer(serializers.ModelSerializer):
+    leagues = LeagueSummarySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Player
+        fields = "__all__"
+
+
 class LeagueSerializer(serializers.ModelSerializer):
-    players = PlayerSerializer(many=True, read_only=True)
+    players = PlayerReadSerializer(many=True, read_only=True)
 
     class Meta:
         model = League
@@ -47,7 +55,7 @@ class MatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Match
-        fields = ['id', 'league', 'date', 'player_stats']
+        fields = ["id", "league", "date", "player_stats"]
 
     def create(self, validated_data):
         player_stats_data = validated_data.pop("player_stats")

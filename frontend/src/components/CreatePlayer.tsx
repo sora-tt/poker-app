@@ -39,7 +39,7 @@ const CreatePlayer: React.FC = () => {
                 leagues: selectedLeagueIds, // リーグに所属しない場合も許可する
             })
             .then((response) => {
-                navigate("/players"); // 作成後、プレイヤー一覧ページへリダイレクトする
+                navigate("/"); // 作成後、トップページへリダイレクトする
             })
             .catch((error) => {
                 console.error("There was an error creating the player!", error);
@@ -65,6 +65,7 @@ const CreatePlayer: React.FC = () => {
                         multiple
                         value={selectedLeagueIds.map(String)}
                         onChange={handleLeagueChange}
+                        required
                     >
                         {leagues.map((league) => (
                             <option key={league.id} value={league.id}>
