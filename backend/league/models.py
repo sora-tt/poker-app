@@ -21,19 +21,26 @@ class Player(models.Model):
         return self.name
 
 
-class PlayerLeagueStat(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    league = models.ForeignKey(League, on_delete=models.CASCADE)
-    score = models.IntegerField(default=0)
+# class PlayerLeagueStat(models.Model):
+#     player = models.ForeignKey(Player, on_delete=models.CASCADE)
+#     league = models.ForeignKey(League, on_delete=models.CASCADE)
+#     score = models.IntegerField(default=0)
 
-    class Meta:
-        unique_together = ("player", "league")
+#     class Meta:
+#         unique_together = ("player", "league")
 
 
 class Match(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE, related_name="matches")
-    players = models.ManyToManyField(Player, related_name="matches")
     date = models.DateField()
 
     def __str__(self):
         return f"Match in {self.league.name} on {self.date}"
+    
+class MatchPlayerStat(models.Model):
+    match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='player_stats')
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    score = models.IntegerField()
+    
+    class Meta:
+        unique_together = ('match', 'player')

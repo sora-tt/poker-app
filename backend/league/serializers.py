@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import League, Match, Player
+from .models import League, Match, MatchPlayerStat, Player
 
 
 class LeagueSummarySerializer(serializers.ModelSerializer):
@@ -34,19 +34,37 @@ class LeagueSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class MatchPlayerStatSerializer(serializers.ModelSerializer):
+    player = serializers.PrimaryKeyRelatedField(queryset=Player.objects.all())
+
+    class Meta:
+        model = MatchPlayerStat
+        fields = ["player", "score"]
+
+
 class MatchSerializer(serializers.ModelSerializer):
-    players = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Player.objects.all(),  # writeできるようにする
-    )
+    player_stats = MatchPlayerStatSerializer(many=True)
 
     class Meta:
         model = Match
-        fields = "__all__"
+        fields = ['id', 'league', 'date', 'player_stats']
 
     def create(self, validated_data):
-        players_data = validated_data.pop("players", [])
+        player_stats_data = validated_data.pop("player_stats")
         match = Match.objects.create(**validated_data)
-        match.players.set(players_data)
+        for stat in player_stats_data:
+            MatchPlayerStat.objects.create(match=match, **stat)
         return match
-    
+
+    def update(self, instance, validated_data):
+        player_stats_data = validated_data.pop("player_stats", [])
+        instance.league = validated_data.get("league", instance.league)
+        instance.date = validated_data.get("date", instance.date)
+        instance.save()
+
+        if player_stats_data:
+            instance.player_stats.all().delete()
+            for stat in player_stats_data:
+                MatchPlayerStat.objects.create(match=instance, **stat)
+
+        return instance

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { match } from "assert";
 
 interface Player {
     id: number;
@@ -24,6 +25,7 @@ const CreateMatch: React.FC = () => {
     const [selectedLeague, setSelectedLeague] = useState<string>("");
     const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
     const [date, setDate] = useState("");
+    const [scores, setScores] = useState<{ [playerId: string]: string }>({});
     const navigate = useNavigate();
     const { id: leagueIdFromParams } = useParams<{ id: string }>();
 
@@ -64,6 +66,30 @@ const CreateMatch: React.FC = () => {
             setPlayers([]);
         }
         setSelectedPlayers([]);
+        setScores({});
+    };
+
+    const handlePlayerSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const options = Array.from(
+            e.target.selectedOptions,
+            (opt) => opt.value
+        );
+        setSelectedPlayers(options);
+
+        setScores((prevScores) => {
+            const newScores: { [playerId: string]: string } = {};
+            options.forEach((id) => {
+                newScores[id] = prevScores[id] || "";
+            });
+            return newScores;
+        });
+    };
+
+    const handleScoreChange = (playerId: string, value: string) => {
+        setScores((prevScores) => ({
+            ...prevScores,
+            [playerId]: value,
+        }));
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -71,12 +97,20 @@ const CreateMatch: React.FC = () => {
         const leagueId = parseInt(selectedLeague);
         if (isNaN(leagueId)) return;
 
+        const matchData = {
+            league: leagueId,
+            date: date,
+            players: selectedPlayers.map((id) => parseInt(id)),
+            player_stats: selectedPlayers.map((id) => ({
+                player: parseInt(id),
+                score: parseFloat(scores[id]) || 0,
+            })),
+        };
+
+        console.log(matchData)
+
         axios
-            .post("http://localhost:8000/api/matches/", {
-                league: selectedLeague,
-                players: selectedPlayers.map((id) => parseInt(id)),
-                date: date,
-            })
+            .post("http://localhost:8000/api/matches/", matchData)
             .then(() => {
                 navigate("/"); // 作成後にトップへ戻る（必要ならルートを変更してください）
             })
@@ -136,6 +170,31 @@ const CreateMatch: React.FC = () => {
                         ))}
                     </select>
                 </div>
+
+                {selectedPlayers.map((playerId) => {
+                    const player = players.find(
+                        (p) => p.id === parseInt(playerId)
+                    );
+                    return (
+                        <div key={playerId}>
+                            <label>
+                                Score of {player?.name}:
+                                <input
+                                    type="number"
+                                    value={scores[playerId] || ""}
+                                    onChange={(e) =>
+                                        handleScoreChange(
+                                            playerId,
+                                            e.target.value
+                                        )
+                                    }
+                                    required
+                                />
+                            </label>
+                        </div>
+                    );
+                })}
+
                 <button type="submit">Create Match</button>
             </form>
         </div>
