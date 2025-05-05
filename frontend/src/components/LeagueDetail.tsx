@@ -78,10 +78,10 @@ const LeagueDetail = () => {
                         <li key={player.id}>
                             {player.name}{' '}
                             <button onClick={() => handleEditPlayer(player.id)}>
-                                Edit
+                                <i className="fa-solid fa-pen"></i>
                             </button>{' '}
                             <button onClick={() => handleDeletePlayer(player.id)} style={{color: 'red'}}>
-                                Delete
+                                <i className="fa-solid fa-trash"></i>
                             </button>
                         </li>
                     ))
