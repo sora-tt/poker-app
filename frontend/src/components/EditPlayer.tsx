@@ -12,6 +12,7 @@ const EditPlayer: React.FC = () => {
     const navigate = useNavigate();
     const [player, setPlayer] = useState<Player | null>(null);
     const [name, setName] = useState("");
+    const [error, setError] = useState('')
 
     useEffect(() => {
         if (id) {
@@ -23,13 +24,19 @@ const EditPlayer: React.FC = () => {
                 })
                 .catch((error) => {
                     console.error("Error fetching player:", error);
+                    setError("Failed to acquire the player's info")
                 });
         }
     }, [id]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!id) return;
+        if (name.trim().length === 0) {
+            setError('Name is required')
+            return
+        }
+
+        setError('')
 
         axios
             .put(`http://localhost:8000/api/players/${id}/`, {
@@ -41,6 +48,7 @@ const EditPlayer: React.FC = () => {
             })
             .catch((error) => {
                 console.error("Error updating player:", error);
+                setError("Failed to update player's name")
             });
     };
 
@@ -61,6 +69,11 @@ const EditPlayer: React.FC = () => {
                         required
                     />
                 </div>
+
+                {error && (
+                    <p style={{color: 'red', marginTop: '8px'}}>{error}</p>
+                )}
+
                 <button type="submit">Save</button>
             </form>
         </div>
