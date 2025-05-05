@@ -8,6 +8,7 @@ import LeagueDetail from "./components/LeagueDetail";
 import EditLeague from "./components/EditLeague";
 import CreatePlayer from "./components/CreatePlayer";
 import CreateMatch from "./components/CreateMatch";
+import EditPlayer from "./components/EditPlayer";
 
 function App() {
     return (
@@ -51,6 +52,10 @@ function App() {
                             <Route
                                 path="/league/:id/matches/create"
                                 element={<CreateMatch />}
+                            />
+                            <Route
+                                path="/players/:id/edit"
+                                element={<EditPlayer />}
                             />
                         </Routes>
                     </div>
