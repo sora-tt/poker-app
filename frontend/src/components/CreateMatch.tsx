@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { match } from "assert";
 
 interface Player {
@@ -69,21 +69,36 @@ const CreateMatch: React.FC = () => {
         setScores({});
     };
 
-    const handlePlayerSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const options = Array.from(
-            e.target.selectedOptions,
-            (opt) => opt.value
-        );
-        setSelectedPlayers(options);
-
-        setScores((prevScores) => {
-            const newScores: { [playerId: string]: string } = {};
-            options.forEach((id) => {
-                newScores[id] = prevScores[id] || "";
-            });
-            return newScores;
+    const handleCheckboxChange = (playerId: string) => {
+        setSelectedPlayers((prevSelected) => {
+            if (prevSelected.includes(playerId)) {
+                const updated = prevSelected.filter((id) => id !== playerId);
+                const newScores = { ...scores };
+                delete newScores[playerId];
+                setScores(newScores);
+                return updated;
+            } else {
+                setScores((prev) => ({ ...prev, [playerId]: "" }));
+                return [...prevSelected, playerId];
+            }
         });
     };
+
+    // const handlePlayerSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    //     const options = Array.from(
+    //         e.target.selectedOptions,
+    //         (opt) => opt.value
+    //     );
+    //     setSelectedPlayers(options);
+
+    //     setScores((prevScores) => {
+    //         const newScores: { [playerId: string]: string } = {};
+    //         options.forEach((id) => {
+    //             newScores[id] = prevScores[id] || "";
+    //         });
+    //         return newScores;
+    //     });
+    // };
 
     const handleScoreChange = (playerId: string, value: string) => {
         setScores((prevScores) => ({
@@ -107,12 +122,12 @@ const CreateMatch: React.FC = () => {
             })),
         };
 
-        console.log(matchData)
+        console.log(matchData);
 
         axios
             .post("http://localhost:8000/api/matches/", matchData)
             .then(() => {
-                navigate("/"); // 作成後にトップへ戻る（必要ならルートを変更してください）
+                navigate(`/league/${matchData.league}/matches`); // 作成後にトップへ戻る（必要ならルートを変更してください）
             })
             .catch((error) => {
                 console.error("There was an error creating the match!", error);
@@ -151,52 +166,62 @@ const CreateMatch: React.FC = () => {
                     </div>
                 )}
                 <div>
-                    <label>Players:</label>
-                    <select
-                        multiple
-                        value={selectedPlayers}
-                        onChange={(e) => {
-                            const options = Array.from(
-                                e.target.selectedOptions,
-                                (opt) => opt.value
-                            );
-                            setSelectedPlayers(options);
-                        }}
-                    >
-                        {players.map((player: any) => (
-                            <option key={player.id} value={player.id}>
-                                {player.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
-                {selectedPlayers.map((playerId) => {
-                    const player = players.find(
-                        (p) => p.id === parseInt(playerId)
-                    );
-                    return (
-                        <div key={playerId}>
+                    <h3>Select Players:</h3>
+                    {players.map((player) => (
+                        <div key={player.id}>
                             <label>
-                                Score of {player?.name}:
                                 <input
-                                    type="number"
-                                    value={scores[playerId] || ""}
-                                    onChange={(e) =>
-                                        handleScoreChange(
-                                            playerId,
-                                            e.target.value
+                                    type="checkbox"
+                                    value={player.id}
+                                    checked={selectedPlayers.includes(
+                                        player.id.toString()
+                                    )}
+                                    onChange={() =>
+                                        handleCheckboxChange(
+                                            player.id.toString()
                                         )
                                     }
-                                    required
                                 />
                             </label>
+                            {player.name}
                         </div>
-                    );
-                })}
+                    ))}
+                </div>
+
+                <div>
+                    <h3>Enter Scores:</h3>
+                    {selectedPlayers.length !== 0 ? (selectedPlayers.map((playerId) => {
+                        const player = players.find(
+                            (p) => p.id === parseInt(playerId)
+                        );
+                        return (
+                            <div key={playerId}>
+                                <label>
+                                    Score of {player?.name}:
+                                    <input
+                                        type="number"
+                                        value={scores[playerId] || ""}
+                                        onChange={(e) =>
+                                            handleScoreChange(
+                                                playerId,
+                                                e.target.value
+                                            )
+                                        }
+                                        required
+                                    />
+                                </label>
+                            </div>
+                        );
+                    })) : (
+                        <p>No Players here.</p>
+                    )}
+                </div>
 
                 <button type="submit">Create Match</button>
             </form>
+            <Link to={`/league/${leagueIdFromParams}/matches`}>
+                <button>Cancel</button>
+            </Link>
         </div>
     );
 };

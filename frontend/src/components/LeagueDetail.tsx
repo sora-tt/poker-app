@@ -23,7 +23,7 @@ interface RankingEntry {
 const LeagueDetail = () => {
     const { id } = useParams<{ id: string }>();
     const [league, setLeague] = useState<League | null>(null);
-    const [ranking, setRanking] = useState<RankingEntry[]>([])
+    const [ranking, setRanking] = useState<RankingEntry[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,11 +36,16 @@ const LeagueDetail = () => {
             .catch((error) => {
                 console.error("There was an error fetching the league!", error);
             });
-        
+
         // ランキング取得
-        axios.get<RankingEntry[]>(`http://localhost:8000/api/leagues/${id}/ranking/`)
-        .then((response) => setRanking(response.data))
-        .catch((error) => console.error("There was an error fetching the ranking!", error))
+        axios
+            .get<RankingEntry[]>(
+                `http://localhost:8000/api/leagues/${id}/ranking/`
+            )
+            .then((response) => setRanking(response.data))
+            .catch((error) =>
+                console.error("There was an error fetching the ranking!", error)
+            );
     }, [id]);
 
     const handleDelete = () => {
@@ -120,8 +125,8 @@ const LeagueDetail = () => {
                     <li>No players in this league.</li>
                 )}
             </ul>
-            <Link to={`/league/${id}/matches/create`}>
-                <button>Create Match</button>
+            <Link to={`/league/${id}/matches/`}>
+                <button>View Matches</button>
             </Link>
             <br />
             <Link to={`/league/${id}/edit`}>

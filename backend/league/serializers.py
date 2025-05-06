@@ -12,12 +12,12 @@ class LeagueSummarySerializer(serializers.ModelSerializer):
 class PlayerWriteSerializer(serializers.ModelSerializer):
     # leagues = LeagueSummarySerializer(many=True, read_only=True)
     leagues = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=League.objects.all()
+        many=True, queryset=League.objects.all(), # write_only=True
     )
 
     class Meta:
         model = Player
-        fields = "__all__"
+        fields = '__all__'
 
     # def create(self, validated_data):
     #     leagues_data = validated_data.pop('leagues', [])
