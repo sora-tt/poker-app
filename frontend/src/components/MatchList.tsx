@@ -58,7 +58,7 @@ const MatchList: React.FC = () => {
             </Link>
             <br />
             <Link to={`/league/${leagueId}`}>
-                <button>Return to League</button>
+                <button>Return</button>
             </Link>
             <ul>
                 {matches.length > 0 ? (
