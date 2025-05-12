@@ -88,7 +88,7 @@ const LeagueDetail = () => {
     }
 
     return (
-        <div>
+        <div className="container" style={{ paddingTop: "70px", paddingBottom: "20px" }}>
             <h2>{league.name}</h2>
 
             <h3>Score Ranking</h3>

@@ -24,10 +24,14 @@ const CreatePlayer: React.FC = () => {
             });
     }, []);
 
-    const handleLeagueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedOptions = Array.from(e.target.selectedOptions);
-        const ids = selectedOptions.map((option) => parseInt(option.value));
-        setSelectedLeagueIds(ids);
+    const handleLeagueToggle = (leagueId: number, isChecked: boolean) => {
+        if (isChecked) {
+            setSelectedLeagueIds((prev) => [...prev, leagueId]);
+        } else {
+            setSelectedLeagueIds((prev) =>
+                prev.filter((id) => id !== leagueId)
+            );
+        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -61,7 +65,22 @@ const CreatePlayer: React.FC = () => {
                 </div>
                 <div>
                     <label>Select Leagues:</label>
-                    <select
+                    {leagues.map((league) => (
+                        <label key={league.id} style={{ display: "block" }}>
+                            <input
+                                type="checkbox"
+                                checked={selectedLeagueIds.includes(league.id)}
+                                onChange={(e) =>
+                                    handleLeagueToggle(
+                                        league.id,
+                                        e.target.checked
+                                    )
+                                }
+                            />
+                            {league.name}
+                        </label>
+                    ))}
+                    {/* <select
                         multiple
                         value={selectedLeagueIds.map(String)}
                         onChange={handleLeagueChange}
@@ -72,7 +91,7 @@ const CreatePlayer: React.FC = () => {
                                 {league.name}
                             </option>
                         ))}
-                    </select>
+                    </select> */}
                 </div>
                 <button type="submit">Create Player</button>
             </form>

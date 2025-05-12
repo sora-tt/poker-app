@@ -2,6 +2,7 @@ import React from "react";
 import logo from "./logo.svg";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
+import Header from "./components/Header";
 import Leagues from "./components/Leagues";
 import CreateLeague from "./components/CreateLeague";
 import LeagueDetail from "./components/LeagueDetail";
@@ -16,7 +17,7 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
+                {/* <img src={logo} className="App-logo" alt="logo" /> */}
                 {/* <p>
             Edit <code>src/App.tsx</code> and save to reload.
         </p>
@@ -28,14 +29,9 @@ function App() {
         >
             Learn React
         </a> */}
-                <h1>Welcome to the Poker App</h1>
                 <Router>
                     <div>
-                        <nav>
-                            <Link to="/">League Lists</Link> |{" "}
-                            <Link to="/create">Create League</Link> |{" "}
-                            <Link to="/players/new">Create Player</Link>
-                        </nav>
+                        <Header />
                         <Routes>
                             <Route path="/" element={<Leagues />} />
                             <Route path="/create" element={<CreateLeague />} />
