@@ -1,5 +1,65 @@
 # POKER APP
 
+## Directory Structure
+
+```
+.
+└── poker-app/
+    ├── backend/
+    │   ├── backend/
+    │   │   ├── __init__.py
+    │   │   ├── asgi.py
+    │   │   ├── settings.py
+    │   │   ├── urls.py
+    │   │   └── wsgi.py
+    │   ├── league/
+    │   │   ├── migrations/
+    │   │   ├── __init__.py
+    │   │   ├── admin.py
+    │   │   ├── apps.py
+    │   │   ├── models.py
+    │   │   ├── serializers.py
+    │   │   ├── tests.py
+    │   │   ├── urls.py
+    │   │   └── views.py
+    │   ├── Dockerfile
+    │   ├── manage.py
+    │   └── requirements.txt
+    ├── frontend/
+    │   ├── public/
+    │   ├── src/
+    │   │   ├── assets/
+    │   │   │   └── title-logo.png
+    │   │   ├── components/
+    │   │   │   ├── CreateLeague.tsx
+    │   │   │   ├── CreateMatch.tsx
+    │   │   │   ├── CreatePlayer.tsx
+    │   │   │   ├── EditLeague.tsx
+    │   │   │   ├── EditMatch.tsx
+    │   │   │   ├── EditPlayer.tsx
+    │   │   │   ├── Header.tsx
+    │   │   │   ├── LeagueDetail.tsx
+    │   │   │   ├── Leagues.tsx
+    │   │   │   └── MatchList.tsx
+    │   │   ├── App.css
+    │   │   ├── App.test.tsx
+    │   │   ├── App.tsx
+    │   │   ├── index.css
+    │   │   ├── index.tsx
+    │   │   ├── react-app-env.d.ts
+    │   │   ├── reportWebVitals.ts
+    │   │   └── setupTests.ts
+    │   ├── .gitignore
+    │   ├── Dockerfile
+    │   ├── package-lock.json
+    │   ├── package.json
+    │   ├── README.md
+    │   └── tsconfig.json
+    ├── .gitignore
+    ├── docker-compose.yml
+    └── README.md
+```
+
 ## TODO
 
 -   ~~プレイヤー名編集画面の作成~~
@@ -11,4 +71,3 @@
 -   ~~リーグ詳細画面にプレイヤーの成績をランキング表示する~~
 -   ~~リーグ詳細画面でプレイヤーの名前を変更できるようにする~~
 -   `Leagues.tsx` 以外のスタイルを書く
-
