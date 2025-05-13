@@ -1,15 +1,16 @@
 import React from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import title_logo from '../assets/title-logo.png'
+import title_logo2 from "../assets/title-logo2.png";
 
 const Header: React.FC = () => {
     return (
-        <Navbar fixed='top' bg="light" expand="lg">
-            <Container className='justify-content-center'>
-                <Navbar.Brand as={Link} to="/" className='mx-auto'>
+        <Navbar fixed="top" bg="light" expand="lg">
+            <Container
+            >
+                <Navbar.Brand as={Link} to="/" className="me-auto">
                     <img
-                        src={title_logo}
+                        src={title_logo2}
                         alt="Logo"
                         height="40"
                         className="d-inline-block align-top"

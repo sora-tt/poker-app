@@ -36,6 +36,15 @@ const Leagues: React.FC = () => {
             <Row className="justify-content-center">
                 <Col xs="auto">
                     <ListGroup>
+                        <ListGroup.Item className="d-flex justify-content-between bg-light">
+                            <div
+                                className="text-start text-muted"
+                                style={{ maxWidth: "50vw" }}
+                            >
+                                League Name
+                            </div>
+                            <div style={{ width: "auto" }}></div>
+                        </ListGroup.Item>
                         {leagues.map((league) => (
                             <ListGroup.Item
                                 key={league.id}
@@ -44,8 +53,8 @@ const Leagues: React.FC = () => {
                                 style={{ overflow: "hidden" }}
                             >
                                 <div
-                                    className="text-truncate me-3"
-                                    style={{ maxWidth: "80%" }}
+                                    className="text-truncate me-5"
+                                    style={{ maxWidth: "50vw" }}
                                     title={league.name}
                                 >
                                     {league.name}

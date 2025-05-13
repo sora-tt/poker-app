@@ -104,6 +104,9 @@ const LeagueDetail = () => {
                 <p>No match results yet.</p>
             )}
 
+            <h3>Score Transition</h3>
+            <p>Stay tune...</p>
+
             <h3>Players in this league</h3>
             <ul>
                 {league.players && league.players.length > 0 ? (
