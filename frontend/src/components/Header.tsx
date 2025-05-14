@@ -19,10 +19,10 @@ const Header: React.FC = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <Nav.Link as={Link} to="/create">
-              Create New League
+              New League
             </Nav.Link>
             <Nav.Link as={Link} to="/players/new">
-              Create New Player
+              New Player
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
