@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { setTextRange } from "typescript";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Table,
+  Alert,
+  Spinner,
+} from "react-bootstrap";
+import "../styles/custom.css";
 
 interface Player {
   id: number;
@@ -83,61 +92,116 @@ const LeagueDetail = () => {
   }
 
   return (
-    <div
-      className="container"
-      style={{ paddingTop: "70px", paddingBottom: "20px" }}
+    <Container
+      className="mt-5"
+      style={{ paddingTop: "30px", paddingBottom: "30px" }}
     >
-      <h2>{league.name}</h2>
+      <Row className="mt-4">
+        <Col>
+          <h1
+            className="text-center text-truncate"
+            style={{
+              maxWidth: "70vw",
+              // overflow: "hidden",
+              // textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              margin: "0 auto",
+            }}
+            title={league.name}
+          >
+            {league.name}
+          </h1>
+        </Col>
+      </Row>
 
-      <h3>Score Ranking</h3>
-      {ranking.length > 0 ? (
-        <ol>
-          {ranking.map((entry) => (
-            <li key={entry.player__id}>
-              {entry.player__name}: {entry.total_score}
-            </li>
-          ))}
-        </ol>
-      ) : (
-        <p>No match results yet.</p>
-      )}
-
-      <h3>Score Transition</h3>
-      <p>Stay tune...</p>
-
-      <h3>Players in this league</h3>
-      <ul>
-        {league.players && league.players.length > 0 ? (
-          league.players.map((player) => (
-            <li key={player.id}>
-              {player.name}{" "}
-              <button onClick={() => handleEditPlayer(player.id)}>
-                <i className="fa-solid fa-pen"></i>
-              </button>{" "}
-              <button
-                onClick={() => handleDeletePlayer(player.id)}
-                style={{ color: "red" }}
+      <Row className="mt-4">
+        <Col>
+          <h3 className="mb-3">Score Ranking</h3>
+          {ranking.length > 0 ? (
+            <div className="table-responsive" style={{ paddingBottom: "40px" }}>
+              <Table
+                striped
+                bordered
+                hover
+                className="text-center align-middle table-no-inner-vertical-borders"
               >
-                <i className="fa-solid fa-trash"></i>
-              </button>
-            </li>
-          ))
-        ) : (
-          <li>No players in this league.</li>
-        )}
-      </ul>
-      <Link to={`/league/${id}/matches/`}>
-        <button>View Matches</button>
-      </Link>
-      <br />
-      <Link to={`/league/${id}/edit`}>
-        <button>Edit League Name</button>
-      </Link>
-      <br />
-      <button onClick={handleDelete} style={{ color: "red" }}>
-        Delete League
-      </button>
-    </div>
+                <thead className="table-white">
+                  <tr>
+                    <th>#</th>
+                    <th>Player</th>
+                    <th>Total Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ranking.map((entry, index) => (
+                    <tr key={entry.player__id}>
+                      <td>{index + 1}</td>
+                      <td>{entry.player__name}</td>
+                      <td
+                        style={{
+                          color: entry.total_score >= 0 ? "#0d6efd" : "#dc3545",
+                        }}
+                      >
+                        {entry.total_score}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+          ) : (
+            <Alert variant="warning">No match results yet.</Alert>
+          )}
+
+          <h3>Players in this league</h3>
+          {league.players && league.players.length > 0 ? (
+            <div style={{ paddingBottom: "40px" }}>
+              <ul className="list-group">
+                {league.players.map((player) => (
+                  <li
+                    key={player.id}
+                    className="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    <div style={{ paddingRight: "50px" }}>{player.name}</div>
+                    <div>
+                      <Button
+                        variant="outline-primary"
+                        onClick={() => handleEditPlayer(player.id)}
+                        className="me-2"
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="outline-danger"
+                        onClick={() => handleDeletePlayer(player.id)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <Alert variant="warning">No players in this league.</Alert>
+          )}
+
+          <Link to={`/league/${id}/matches/`}>
+            <Button variant="primary" className="mt-3">
+              View Matches
+            </Button>
+          </Link>
+
+          <Link to={`/league/${id}/edit`} className="d-block mt-2">
+            <Button variant="secondary">Edit League Name</Button>
+          </Link>
+
+          <Button variant="danger" onClick={handleDelete} className="mt-2">
+            Delete League
+          </Button>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
