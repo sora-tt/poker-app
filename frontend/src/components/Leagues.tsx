@@ -38,7 +38,7 @@ const Leagues: React.FC = () => {
                 className="text-start text-muted"
                 style={{ maxWidth: "50vw" }}
               >
-                League Name
+                <small>League Name</small>
               </div>
               <div style={{ width: "auto" }}></div>
             </ListGroup.Item>
