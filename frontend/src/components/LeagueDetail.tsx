@@ -127,7 +127,7 @@ const LeagueDetail = () => {
               >
                 <thead className="table-white">
                   <tr>
-                    <th>#</th>
+                    <th></th>
                     <th>Player</th>
                     <th>Total Score</th>
                   </tr>
