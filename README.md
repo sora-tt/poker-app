@@ -34,9 +34,9 @@
     │   │   │   ├── CreateLeague.tsx
     │   │   │   ├── CreateMatch.tsx
     │   │   │   ├── CreatePlayer.tsx
-    │   │   │   ├── EditLeague.tsx
-    │   │   │   ├── EditMatch.tsx
-    │   │   │   ├── EditPlayer.tsx
+    │   │   │   ├── *EditLeague.tsx*
+    │   │   │   ├── *EditMatch.tsx*
+    │   │   │   ├── *EditPlayer.tsx*
     │   │   │   ├── Header.tsx
     │   │   │   ├── LeagueDetail.tsx
     │   │   │   ├── Leagues.tsx
