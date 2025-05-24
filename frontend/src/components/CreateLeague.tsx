@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
 const CreateLeague = () => {
   const [name, setName] = useState("");
@@ -13,7 +14,7 @@ const CreateLeague = () => {
       .then((response) => {
         console.log("League created:", response.data);
         setName("");
-        navigate("/"); // 作成成功したらリーグ一覧に移動！
+        navigate("/");
       })
       .catch((error) => {
         console.error("Error creating league:", error);
@@ -21,17 +22,31 @@ const CreateLeague = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={name}
-          onChange={(evt) => setName(evt.target.value)}
-          placeholder="Input League Name"
-        />
-        <button type="submit">Create League</button>
-      </form>
-    </div>
+    <Container className="mt-5">
+      <Row className="justify-content-center">
+        <Col xs="auto">
+          <h2 className="text-center mb-4">Create New League</h2>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="leagueName">
+              <Form.Control
+                type="text"
+                placeholder="Enter league name"
+                value={name}
+                onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
+                  setName(evt.target.value)
+                }
+                required
+              />
+            </Form.Group>
+            <div className="d-grid">
+              <Button variant="primary" type="submit">
+                Create League
+              </Button>
+            </div>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

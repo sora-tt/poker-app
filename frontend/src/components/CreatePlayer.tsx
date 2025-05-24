@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Container, Row, Col, Alert, Form, Button } from "react-bootstrap";
+import { text } from "stream/consumers";
 
 interface League {
   id: number;
@@ -48,49 +50,106 @@ const CreatePlayer: React.FC = () => {
       });
   };
 
+  if (leagues.length === 0) {
+    return (
+      <Container className="mt-5">
+        <Row className="justify-content-center">
+          <Col xs="auto">
+            <h2 className="text-center mb-4">Create New Player</h2>
+            <Alert variant="danger" className="text-center">
+              No leagues available. <br />
+              Please create a league first.
+            </Alert>
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
+
   return (
-    <div>
-      <h2>Create New Player</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Player name:</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Select Leagues:</label>
-          {leagues.map((league) => (
-            <label key={league.id} style={{ display: "block" }}>
-              <input
-                type="checkbox"
-                checked={selectedLeagueIds.includes(league.id)}
-                onChange={(e) =>
-                  handleLeagueToggle(league.id, e.target.checked)
-                }
+    <Container className="mt-5">
+      <Row className="justify-content-center">
+        <Col xs={12} md={6}>
+          <h2 className="text-center mb-4">Create New Player</h2>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="playerName">
+              <Form.Label>Player Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter player name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
               />
-              {league.name}
-            </label>
-          ))}
-          {/* <select
-                        multiple
-                        value={selectedLeagueIds.map(String)}
-                        onChange={handleLeagueChange}
-                        required
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="selectLeagues">
+              <Form.Label>Select Leagues</Form.Label>
+              {leagues.map((league) => (
+                <Form.Check
+                  key={league.id}
+                  type="checkbox"
+                  label={
+                    <span
+                      className="text-truncate"
+                      style={{
+                        display: "block",
+                        maxWidth: "70vw",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                      title={league.name} // ホバー時にフルテキストを表示
                     >
-                        {leagues.map((league) => (
-                            <option key={league.id} value={league.id}>
-                                {league.name}
-                            </option>
-                        ))}
-                    </select> */}
-        </div>
-        <button type="submit">Create Player</button>
-      </form>
-    </div>
+                      {league.name}
+                    </span>
+                  }
+                  checked={selectedLeagueIds.includes(league.id)}
+                  onChange={(evt) =>
+                    handleLeagueToggle(league.id, evt.target.checked)
+                  }
+                  style={{ textAlign: "left" }}
+                />
+              ))}
+            </Form.Group>
+            <div className="d-grid">
+              <Button variant="primary" type="submit">
+                Create Player
+              </Button>
+            </div>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
+    // <div>
+    //   <h2>Create New Player</h2>
+    //   <form onSubmit={handleSubmit}>
+    //     <div>
+    //       <label>Player name:</label>
+    //       <input
+    //         type="text"
+    //         value={name}
+    //         onChange={(e) => setName(e.target.value)}
+    //         required
+    //       />
+    //     </div>
+    //     <div>
+    //       <label>Select Leagues:</label>
+    //       {leagues.map((league) => (
+    //         <label key={league.id} style={{ display: "block" }}>
+    //           <input
+    //             type="checkbox"
+    //             checked={selectedLeagueIds.includes(league.id)}
+    //             onChange={(e) =>
+    //               handleLeagueToggle(league.id, e.target.checked)
+    //             }
+    //           />
+    //           {league.name}
+    //         </label>
+    //       ))}
+    //     </div>
+    //     <button type="submit">Create Player</button>
+    //   </form>
+    // </div>
   );
 };
 

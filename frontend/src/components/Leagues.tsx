@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Button, Container, Row, Col, ListGroup } from "react-bootstrap";
+import { Button, Container, Row, Col, ListGroup, Alert } from "react-bootstrap";
 
 interface League {
   id: number;
@@ -32,36 +32,42 @@ const Leagues: React.FC = () => {
       </Row>
       <Row className="justify-content-center">
         <Col xs="auto">
-          <ListGroup>
-            <ListGroup.Item className="d-flex justify-content-between bg-light">
-              <div
-                className="text-start text-muted"
-                style={{ maxWidth: "50vw" }}
-              >
-                <small>League Name</small>
-              </div>
-              <div style={{ width: "auto" }}></div>
-            </ListGroup.Item>
-            {leagues.map((league) => (
-              <ListGroup.Item
-                key={league.id}
-                className="d-flex justify-content-between align-items-center"
-                // style={{ whiteSpace: "nowrap" }}
-                style={{ overflow: "hidden" }}
-              >
+          {leagues.length > 0 ? (
+            <ListGroup>
+              <ListGroup.Item className="d-flex justify-content-between bg-light">
                 <div
-                  className="text-truncate me-5"
+                  className="text-start text-muted"
                   style={{ maxWidth: "50vw" }}
-                  title={league.name}
                 >
-                  {league.name}
+                  <small>League Name</small>
                 </div>
-                <Link to={`/league/${league.id}`}>
-                  <Button variant="primary">View</Button>
-                </Link>
+                <div style={{ width: "auto" }}></div>
               </ListGroup.Item>
-            ))}
-          </ListGroup>
+              {leagues.map((league) => (
+                <ListGroup.Item
+                  key={league.id}
+                  className="d-flex justify-content-between align-items-center"
+                  style={{ overflow: "hidden" }}
+                >
+                  <div
+                    className="text-truncate me-5"
+                    style={{ maxWidth: "50vw" }}
+                    title={league.name}
+                  >
+                    {league.name}
+                  </div>
+                  <Link to={`/league/${league.id}`}>
+                    <Button variant="primary">View</Button>
+                  </Link>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          ) : (
+            <Alert variant='warning'>
+              No Leagues Available.<br />
+              Please create a new league.
+            </Alert>
+          )}
         </Col>
       </Row>
     </Container>
