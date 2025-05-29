@@ -1,0 +1,38 @@
+.table-rounded-container {
+  border-radius: 10px; /* 角丸を適用 */
+  overflow: hidden; /* 角丸を有効にする */
+}
+
+.table-rounded {
+  border-radius: 10px; /* 表自体にも角丸を適用 */
+  overflow: hidden; /* 角丸を有効にする */
+}
+
+.table-no-inner-vertical-borders {
+  border-collapse: collapse;
+}
+
+.table-no-inner-vertical-borders td,
+.table-no-inner-vertical-borders th {
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.table-no-inner-vertical-borders tr:first-child th {
+  border-top: 1px solid #dee2e6; /* 外枠の上線 */
+}
+
+.table-no-inner-vertical-borders tr:last-child td {
+  border-bottom: 1px solid #dee2e6; /* 外枠の下線 */
+}
+
+/* 外枠の左右の線を明示的に設定 */
+.table-no-inner-vertical-borders tr:first-child th:first-child,
+.table-no-inner-vertical-borders tr:last-child td:first-child {
+  border-left: 1px solid #dee2e6; /* 外枠の左線 */
+}
+
+.table-no-inner-vertical-borders tr:first-child th:last-child,
+.table-no-inner-vertical-borders tr:last-child td:last-child {
+  border-right: 1px solid #dee2e6; /* 外枠の右線 */
+}
