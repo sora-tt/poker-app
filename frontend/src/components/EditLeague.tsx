@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 
 interface League {
   id: number;
@@ -11,6 +12,7 @@ const EditLeague = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     axios
@@ -20,6 +22,7 @@ const EditLeague = () => {
       })
       .catch((error) => {
         console.error("There was an error fetching the league!", error);
+        setError("Failed to fetch league details");
       });
   }, [id]);
 
@@ -33,23 +36,42 @@ const EditLeague = () => {
       })
       .catch((error) => {
         console.error("There was an error updating the league!", error);
+        setError(
+          error.response?.data?.detail || "Failed to update league name"
+        );
       });
   };
 
   return (
-    <div>
-      <h2>Edit League</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="League Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <button type="submit">Save</button>
-      </form>
-    </div>
+    <Container className="mt-5">
+      <Row className="justify-content-center">
+        <Col xs={12} md={6}>
+          <h2 className="text-center mb-4">Edit League</h2>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="leagueName">
+              <Form.Label>League Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="League Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </Form.Group>
+            {error && (
+              <Alert variant="danger" className="text-center py-2">
+                {error}
+              </Alert>
+            )}
+            <div className="d-grid">
+              <Button variant="primary" type="submit">
+                Save
+              </Button>
+            </div>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

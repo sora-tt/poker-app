@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Alert, Form, Button } from "react-bootstrap";
-import { text } from "stream/consumers";
 
 interface League {
   id: number;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { match } from "assert";
 
 interface Player {
   id: number;
@@ -83,22 +82,6 @@ const CreateMatch: React.FC = () => {
       }
     });
   };
-
-  // const handlePlayerSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //     const options = Array.from(
-  //         e.target.selectedOptions,
-  //         (opt) => opt.value
-  //     );
-  //     setSelectedPlayers(options);
-
-  //     setScores((prevScores) => {
-  //         const newScores: { [playerId: string]: string } = {};
-  //         options.forEach((id) => {
-  //             newScores[id] = prevScores[id] || "";
-  //         });
-  //         return newScores;
-  //     });
-  // };
 
   const handleScoreChange = (playerId: string, value: string) => {
     setScores((prevScores) => ({

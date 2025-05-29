@@ -186,19 +186,23 @@ const LeagueDetail = () => {
             <Alert variant="warning">No players in this league.</Alert>
           )}
 
-          <Link to={`/league/${id}/matches/`}>
-            <Button variant="primary" className="mt-3">
-              View Matches
+          <div className="d-grid gap-2" style={{ maxWidth: 500 }}>
+            <Link to={`/league/${id}/matches/`} style={{ display: "contents" }}>
+              <Button variant="primary" className="w-100 mb-2">
+                View Matches
+              </Button>
+            </Link>
+
+            <Link to={`/league/${id}/edit`} style={{ display: "contents" }}>
+              <Button variant="secondary" className="w-100 mb-2">
+                Edit League Name
+              </Button>
+            </Link>
+
+            <Button variant="danger" onClick={handleDelete} className="w-100">
+              Delete League
             </Button>
-          </Link>
-
-          <Link to={`/league/${id}/edit`} className="d-block mt-2">
-            <Button variant="secondary">Edit League Name</Button>
-          </Link>
-
-          <Button variant="danger" onClick={handleDelete} className="mt-2">
-            Delete League
-          </Button>
+          </div>
         </Col>
       </Row>
     </Container>
